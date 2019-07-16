@@ -6,9 +6,11 @@ using TMPro;
 [System.Serializable]
 public class CouchPart {
     public CouchPartName couchPartName;
-    public TextMeshProUGUI text;
+    public List<TextMeshProUGUI> texts;
 
     public void SetText (string bodyPart) {
-        text.text = bodyPart;
+        foreach (TextMeshProUGUI text in texts) {
+            text.text = bodyPart;
+        }
     }
 }

@@ -1,9 +1,9 @@
 [System.Serializable]
 public enum BodyPartName {
     head,
-    leftHand,
-    rightHand,
     butt,
-    leftFoot,
-    rightFoot
+    hand, leftHand, rightHand,
+    foot, leftFoot, rightFoot,
+    knee, leftKnee, rightKnee,
+    elbow, leftElbow, rightElbow
 }
