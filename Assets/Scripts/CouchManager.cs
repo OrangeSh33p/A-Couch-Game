@@ -5,6 +5,9 @@ using System.Text;
 using TMPro;
 
 public class CouchManager : MonoBehaviour {
+    [Header("BALANCING")]
+    public int players;
+
     [Header("OPTIONS")]
     public bool useHeads;
     public bool useButts;
@@ -36,11 +39,19 @@ public class CouchManager : MonoBehaviour {
 
     public void NextRound () {
         ClearTexts();
+
+        string textToDisplay;
         
+        if (personalizeCommands) {
+            int randomPlayerIndex = Random.Range(1, players+1);
+            textToDisplay += "player "+randomPlayerIndex+"\n";
+        }
+
         BodyPartName randomBodyPart = usedBodyParts[Random.Range(0, usedBodyParts.Count)];
         CouchPart randomCouchPart = usedCouchParts[Random.Range(0, usedCouchParts.Count)];
-        randomCouchPart.SetText(ToText(randomBodyPart));
-        //Debug.Log("Put "+ToText(bodyPart)+" on "+ToText(couchPart.couchPartName));
+
+        textToDisplay += ToText(randomBodyPart);
+        randomCouchPart.SetText(textToDisplay);
     }
 
 
