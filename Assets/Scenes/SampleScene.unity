@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -94, y: 137}
-  m_SizeDelta: {x: 90, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &500492408
 MonoBehaviour:
@@ -398,7 +398,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -235.5, y: 43.8}
-  m_SizeDelta: {x: 86.3, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &590264952
 MonoBehaviour:
@@ -698,7 +698,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 94, y: 137}
-  m_SizeDelta: {x: 90, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1036999909
 MonoBehaviour:
@@ -858,7 +858,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -94, y: -37}
-  m_SizeDelta: {x: 86.3, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1263254747
 MonoBehaviour:
@@ -1013,20 +1013,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f4ed3574d4619438309d8b267cd451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  usedBodyPartsNumberTwo: 000000000100000002000000030000000400000005000000
+  players: 4
+  useHeads: 0
+  useButts: 1
+  useElbows: 1
+  useKnees: 1
+  lateralizeBodies: 1
+  lateralizeCushions: 1
+  lateralizeArmrests: 0
+  lateralizeBackrests: 1
+  personalizeCommands: 1
+  allCouchParts:
+  - couchPartName: 0
+    texts:
+    - {fileID: 1263254747}
+    - {fileID: 1701390428}
+  - couchPartName: 1
+    texts:
+    - {fileID: 1263254747}
+  - couchPartName: 2
+    texts:
+    - {fileID: 1701390428}
+  - couchPartName: 3
+    texts:
+    - {fileID: 590264952}
+    - {fileID: 2002765550}
+  - couchPartName: 4
+    texts:
+    - {fileID: 590264952}
+  - couchPartName: 5
+    texts:
+    - {fileID: 2002765550}
+  - couchPartName: 6
+    texts:
+    - {fileID: 500492408}
+    - {fileID: 1036999909}
+  - couchPartName: 7
+    texts:
+    - {fileID: 500492408}
+  - couchPartName: 8
+    texts:
+    - {fileID: 1036999909}
+  allBodyParts: 000000000100000002000000030000000400000005000000060000000700000008000000090000000a0000000b0000000c0000000d000000
+  usedBodyParts: 
   usedCouchParts:
   - couchPartName: 0
-    text: {fileID: 1263254747}
+    texts: []
   - couchPartName: 1
-    text: {fileID: 1701390428}
+    texts: []
   - couchPartName: 2
-    text: {fileID: 590264952}
+    texts: []
   - couchPartName: 3
-    text: {fileID: 2002765550}
+    texts: []
   - couchPartName: 4
-    text: {fileID: 500492408}
+    texts: []
   - couchPartName: 5
-    text: {fileID: 1036999909}
+    texts: []
+  previousPlayer: 0
 --- !u!114 &1681440547
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1088,7 +1131,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 94, y: -37}
-  m_SizeDelta: {x: 86.3, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1701390428
 MonoBehaviour:
@@ -1353,7 +1396,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 235.5, y: 43.8}
-  m_SizeDelta: {x: 86.3, y: 53}
+  m_SizeDelta: {x: 120, y: 53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2002765550
 MonoBehaviour:

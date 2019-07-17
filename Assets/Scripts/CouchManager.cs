@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Text;
 using TMPro;
+using System.Linq;
 
 public class CouchManager : MonoBehaviour {
     [Header("BALANCING")]
@@ -26,6 +27,7 @@ public class CouchManager : MonoBehaviour {
     [Header("STATE")]
     public List<BodyPartName> usedBodyParts;
     public List<CouchPart> usedCouchParts;
+    public int previousPlayer;
 
     private void Start () {
         BuildBodyParts ();
@@ -40,11 +42,11 @@ public class CouchManager : MonoBehaviour {
     public void NextRound () {
         ClearTexts();
 
-        string textToDisplay;
+        string textToDisplay = "";
         
         if (personalizeCommands) {
-            int randomPlayerIndex = Random.Range(1, players+1);
-            textToDisplay += "player "+randomPlayerIndex+"\n";
+            textToDisplay += "player "+(previousPlayer+1)+"\n";
+            previousPlayer = (previousPlayer + 1)%players;
         }
 
         BodyPartName randomBodyPart = usedBodyParts[Random.Range(0, usedBodyParts.Count)];
@@ -77,7 +79,7 @@ public class CouchManager : MonoBehaviour {
     }
 
     private void ClearTexts () {
-        foreach (CouchPart couchPart in usedCouchParts) couchPart.text.text = "";
+        foreach (CouchPart couchPart in usedCouchParts) couchPart.SetText("");
     }
 
     private void BuildBodyParts () {
@@ -120,24 +122,28 @@ public class CouchManager : MonoBehaviour {
         usedCouchParts = allCouchParts;
 
         if (lateralizeArmrests) {
-            usedCouchParts.Remove (CouchPartName.armrest);
+            RemoveCouchPart (CouchPartName.armrest);
         } else {
-            usedCouchParts.Remove (CouchPartName.leftArmrest);
-            usedCouchParts.Remove (CouchPartName.rightArmrest);
+            RemoveCouchPart (CouchPartName.leftArmrest);
+            RemoveCouchPart (CouchPartName.rightArmrest);
         }
 
         if (lateralizeBackrests) {
-            usedCouchParts.Remove (CouchPartName.backrest);
+            RemoveCouchPart (CouchPartName.backrest);
         } else {
-            usedCouchParts.Remove (CouchPartName.leftBackrest);
-            usedCouchParts.Remove (CouchPartName.rightBackrest);
+            RemoveCouchPart (CouchPartName.leftBackrest);
+            RemoveCouchPart (CouchPartName.rightBackrest);
         }
 
         if (lateralizeCushions) {
-            usedCouchParts.Remove (CouchPartName.cushion);
+            RemoveCouchPart (CouchPartName.cushion);
         } else {
-            usedCouchParts.Remove (CouchPartName.leftCushion);
-            usedCouchParts.Remove (CouchPartName.rightCushion);
+            RemoveCouchPart (CouchPartName.leftCushion);
+            RemoveCouchPart (CouchPartName.rightCushion);
         }
+    }
+
+    private void RemoveCouchPart (CouchPartName partToRemove) {
+        usedCouchParts = usedCouchParts.Where(part => part.couchPartName != partToRemove).ToList();
     }
 }
