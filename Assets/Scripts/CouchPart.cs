@@ -7,6 +7,7 @@ using TMPro;
 public class CouchPart {
     public CouchPartName couchPartName;
     public List<TextMeshProUGUI> texts;
+    
 
     public void SetText (string bodyPart) {
         foreach (TextMeshProUGUI text in texts) {

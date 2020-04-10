@@ -14,11 +14,14 @@ public class CouchManager : MonoBehaviour {
     public bool useButts;
     public bool useElbows;
     public bool useKnees;
+    [Space]
     public bool lateralizeBodies;
     public bool lateralizeCushions;
     public bool lateralizeArmrests;
     public bool lateralizeBackrests;
+    [Space]
     public bool personalizeCommands;
+    public bool randomTurns;
 
     [Header("REFERENCES")]
     public List<CouchPart> allCouchParts;
@@ -45,8 +48,17 @@ public class CouchManager : MonoBehaviour {
         string textToDisplay = "";
         
         if (personalizeCommands) {
-            textToDisplay += "player "+(previousPlayer+1)+"\n";
-            previousPlayer = (previousPlayer + 1)%players;
+            int nextPlayer;
+            if (randomTurns) {
+                nextPlayer = Random.Range(1, players);
+                if (nextPlayer >= previousPlayer) nextPlayer++;
+            } else {
+                nextPlayer = previousPlayer + 1;
+                if (nextPlayer > players) nextPlayer = 1;
+            }
+            
+            textToDisplay += "player " + nextPlayer + "\n";
+            previousPlayer = nextPlayer;
         }
 
         BodyPartName randomBodyPart = usedBodyParts[Random.Range(0, usedBodyParts.Count)];
