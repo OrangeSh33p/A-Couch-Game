@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
     public CouchManager couchManager;
     public FlowManager flowManager;
+    public PlayerManager playerManager;
 
     public void Awake() {
         DontDestroyOnLoad(this);

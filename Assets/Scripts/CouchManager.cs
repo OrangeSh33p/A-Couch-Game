@@ -6,8 +6,7 @@ using TMPro;
 using System.Linq;
 
 public class CouchManager : MonoBehaviour {
-    [Header("BALANCING")]
-    public int players;
+    // [Header("BALANCING")]
 
     [Header("OPTIONS")]
     public bool useHeads;
@@ -31,6 +30,9 @@ public class CouchManager : MonoBehaviour {
     public List<BodyPartName> usedBodyParts;
     public List<CouchPart> usedCouchParts;
     public int previousPlayer;
+    
+    //SHORTCUTS
+    public GameManager gm { get { return GameManager.instance; } }
 
     private void Start () {
         BuildBodyParts ();
@@ -50,11 +52,11 @@ public class CouchManager : MonoBehaviour {
         if (personalizeCommands) {
             int nextPlayer;
             if (randomTurns) {
-                nextPlayer = Random.Range(1, players);
+                nextPlayer = Random.Range(1, gm.playerManager.amountOfPlayers);
                 if (nextPlayer >= previousPlayer) nextPlayer++;
             } else {
                 nextPlayer = previousPlayer + 1;
-                if (nextPlayer > players) nextPlayer = 1;
+                if (nextPlayer > gm.playerManager.amountOfPlayers) nextPlayer = 1;
             }
             
             textToDisplay += "player " + nextPlayer + "\n";
