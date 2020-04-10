@@ -9,13 +9,18 @@ public class FlowManager : MonoBehaviour {
     public GS gameState = GS.START_MENU;
 
     public List<GameObject> startMenuObjects;
-    public List<GameObject> playingObjects;
+    public List<GameObject> consentWarningObjects;
     public List<GameObject> playerSelectionObjects;
+    public List<GameObject> playingObjects;
+    
+    //SHORTCUTS
+    public GameManager gm { get { return GameManager.instance; } }
 
 
     public void Start() {
         ExitPlayerSelection();
         ExitPlaying();
+        ExitConsentWarning();
         
         EnterStartMenu();
     }
@@ -33,6 +38,15 @@ public class FlowManager : MonoBehaviour {
         Disable(startMenuObjects);
     }
 
+    public void EnterConsentWarning() {
+        gameState = GS.CONSENT_WARNING;
+        Enable(consentWarningObjects);
+    }
+
+    public void ExitConsentWarning() {
+        Disable(consentWarningObjects);
+    }
+
     public void EnterPlayerSelection() {
         gameState = GS.PLAYER_SELECTION;
         Enable(playerSelectionObjects);
@@ -45,6 +59,7 @@ public class FlowManager : MonoBehaviour {
     public void EnterPlaying() {
         gameState = GS.PLAYING;
         Enable(playingObjects);
+        gm.couchManager.StartPosition();
     }
 
     public void ExitPlaying() {

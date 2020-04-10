@@ -11,6 +11,7 @@ public class PlayerManager : MonoBehaviour {
     
     [Header("STATE")]
     public int amountOfPlayers;
+    public int activePlayer;
 
     [Header("REFERENCES")] 
     public TMP_Text amountOfPlayersText;

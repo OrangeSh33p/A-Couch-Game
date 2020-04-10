@@ -1,47 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.Text;
-using TMPro;
-using System.Linq;
+﻿using UnityEngine;
 
 public class CouchManager : MonoBehaviour {
-    // [Header("BALANCING")]
-
-    [Header("OPTIONS")]
-    public bool useHeads;
-    public bool useButts;
-    public bool useElbows;
-    public bool useKnees;
-    [Space]
-    public bool lateralizeBodies;
-    public bool lateralizeCushions;
-    public bool lateralizeArmrests;
-    public bool lateralizeBackrests;
-    [Space]
-    public bool personalizeCommands;
-    public bool randomTurns;
-
-    [Header("REFERENCES")]
-    public List<CouchPart> allCouchParts;
-    public List<BodyPartName> allBodyParts;
-
-    [Header("STATE")]
-    public List<BodyPartName> usedBodyParts;
-    public List<CouchPart> usedCouchParts;
-    public int previousPlayer;
+    // [Header("REFERENCES")]
     
     //SHORTCUTS
     public GameManager gm { get { return GameManager.instance; } }
 
-    private void Start () {
-        BuildBodyParts ();
-        BuildCouchParts ();
-        ClearTexts ();
-    }
-
-    private void Update () {
-        if (Input.GetMouseButtonDown(0)) NextRound ();
+    public void StartPosition() {
+        ClearTexts();
+        Debug.Log("start position");
     }
 
     public void NextRound () {
@@ -49,115 +16,43 @@ public class CouchManager : MonoBehaviour {
 
         string textToDisplay = "";
         
-        if (personalizeCommands) {
-            int nextPlayer;
-            if (randomTurns) {
-                nextPlayer = Random.Range(1, gm.playerManager.amountOfPlayers);
-                if (nextPlayer >= previousPlayer) nextPlayer++;
-            } else {
-                nextPlayer = previousPlayer + 1;
-                if (nextPlayer > gm.playerManager.amountOfPlayers) nextPlayer = 1;
-            }
-            
-            textToDisplay += "player " + nextPlayer + "\n";
-            previousPlayer = nextPlayer;
+        if (gm.balancingManager.playMode != PM.NO_TURNS) {
+            int activePlayer = GetNextPlayer();
+            textToDisplay += "player " + activePlayer + "\n";
+            gm.playerManager.activePlayer = activePlayer;
         }
 
-        BodyPartName randomBodyPart = usedBodyParts[Random.Range(0, usedBodyParts.Count)];
-        CouchPart randomCouchPart = usedCouchParts[Random.Range(0, usedCouchParts.Count)];
-
-        textToDisplay += ToText(randomBodyPart);
-        randomCouchPart.SetText(textToDisplay);
+        textToDisplay += GetBodyPart().ToText();
+        GetCouchPart().SetText(textToDisplay);
     }
 
 
-    ////////////////////
+    // --------------------
     // UTILS
-    ////////////////////
+    // --------------------
 
-
-    public string ToText (BodyPartName bodyPart) { return UnCamelCase(bodyPart.ToString()); }
-    public string ToText (CouchPartName couchPart) { return UnCamelCase(couchPart.ToString()); }
-
-    public string UnCamelCase(string str) {
-        if (string.IsNullOrEmpty(str)) return str;
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < str.Length; i++)
-        {
-            if (char.IsUpper(str, i)) sb.Append(" ");
-            sb.Append(char.ToLower(str[i]));
-        }
-
-        return sb.ToString();
+    private void ClearTexts () { 
+        gm.balancingManager.usedCouchParts.ForEach(cp => cp.SetText(""));
     }
 
-    private void ClearTexts () {
-        foreach (CouchPart couchPart in usedCouchParts) couchPart.SetText("");
+    private int GetNextPlayer() {
+        int nextPlayer;
+        if (gm.balancingManager.playMode == PM.RANDOM_TURNS) {
+            nextPlayer = Random.Range(1, gm.playerManager.amountOfPlayers);
+            if (nextPlayer >= gm.playerManager.activePlayer) nextPlayer++;
+        } else {
+            nextPlayer = gm.playerManager.activePlayer + 1;
+            if (nextPlayer > gm.playerManager.amountOfPlayers) nextPlayer = 1;
+        }
+
+        return nextPlayer;
     }
 
-    private void BuildBodyParts () {
-        usedBodyParts = allBodyParts;
-
-        if (!useHeads) usedBodyParts.Remove (BodyPartName.head);
-        if (!useButts) usedBodyParts.Remove (BodyPartName.butt);
-
-        if (lateralizeBodies) {
-            usedBodyParts.Remove (BodyPartName.hand);
-            usedBodyParts.Remove (BodyPartName.foot);
-            usedBodyParts.Remove (BodyPartName.elbow);
-            usedBodyParts.Remove (BodyPartName.knee);
-
-            if (!useElbows) {
-                usedBodyParts.Remove (BodyPartName.leftElbow);
-                usedBodyParts.Remove (BodyPartName.rightElbow);
-            } 
-
-            if (!useKnees) {
-                usedBodyParts.Remove (BodyPartName.leftKnee);
-                usedBodyParts.Remove (BodyPartName.rightKnee);
-            } 
-        } else {
-            usedBodyParts.Remove (BodyPartName.leftHand);
-            usedBodyParts.Remove (BodyPartName.rightHand);
-            usedBodyParts.Remove (BodyPartName.leftFoot);
-            usedBodyParts.Remove (BodyPartName.rightFoot);
-            usedBodyParts.Remove (BodyPartName.leftElbow);
-            usedBodyParts.Remove (BodyPartName.rightElbow);
-            usedBodyParts.Remove (BodyPartName.leftKnee);
-            usedBodyParts.Remove (BodyPartName.rightKnee);
-
-            if (!useElbows) usedBodyParts.Remove (BodyPartName.elbow);
-            if (!useKnees) usedBodyParts.Remove (BodyPartName.knee);
-        }
+    private BodyPartName GetBodyPart() {
+        return gm.balancingManager.usedBodyParts.Random();
     }
 
-    private void BuildCouchParts () {
-        usedCouchParts = allCouchParts;
-
-        if (lateralizeArmrests) {
-            RemoveCouchPart (CouchPartName.armrest);
-        } else {
-            RemoveCouchPart (CouchPartName.leftArmrest);
-            RemoveCouchPart (CouchPartName.rightArmrest);
-        }
-
-        if (lateralizeBackrests) {
-            RemoveCouchPart (CouchPartName.backrest);
-        } else {
-            RemoveCouchPart (CouchPartName.leftBackrest);
-            RemoveCouchPart (CouchPartName.rightBackrest);
-        }
-
-        if (lateralizeCushions) {
-            RemoveCouchPart (CouchPartName.cushion);
-        } else {
-            RemoveCouchPart (CouchPartName.leftCushion);
-            RemoveCouchPart (CouchPartName.rightCushion);
-        }
-    }
-
-    private void RemoveCouchPart (CouchPartName partToRemove) {
-        usedCouchParts = usedCouchParts.Where(part => part.couchPartName != partToRemove).ToList();
+    private CouchPart GetCouchPart() {
+        return gm.balancingManager.usedCouchParts.Random();
     }
 }
